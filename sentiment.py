@@ -7,7 +7,8 @@ import pandas as pd
 import plotly.express as px
 
 # Download necessary NLTK data
-download('punkt')
+nltk.download('punkt')
+
 
 # Initialize VADER sentiment analyzer
 vader_analyzer = SentimentIntensityAnalyzer()
