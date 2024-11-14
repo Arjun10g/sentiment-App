@@ -1,13 +1,16 @@
 import streamlit as st
 from textblob import TextBlob
 from nltk.tokenize import sent_tokenize
-import nltk  # Corrected import
+import nltk
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import pandas as pd
 import plotly.express as px
+import os
 
-# Download necessary NLTK data
-nltk.download('punkt')
+# Download necessary NLTK data to a persistent location
+nltk_data_path = os.path.expanduser('~/.nltk_data')
+nltk.download('punkt', download_dir=nltk_data_path)
+nltk.data.path.append(nltk_data_path)
 
 # Initialize VADER sentiment analyzer
 vader_analyzer = SentimentIntensityAnalyzer()
@@ -62,9 +65,9 @@ if st.button("Analyze"):
 
             # Plot if tokenized
             fig = px.line(
-                df, 
-                x=df.index, 
-                y='polarity', 
+                df,
+                x=df.index,
+                y='polarity',
                 title='Sentiment Polarity Change Over Sentences',
                 labels={'index': 'Sentence Index', 'polarity': 'Polarity'},
                 hover_data=['sentence'],
