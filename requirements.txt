@@ -1,7 +1,6 @@
 streamlit
 textblob
-nltk==3.9.1
+nltk
 plotly
 vaderSentiment
 pandas
-os
