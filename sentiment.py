@@ -1,16 +1,9 @@
 import streamlit as st
 from textblob import TextBlob
-from nltk.tokenize import sent_tokenize
-import nltk
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import pandas as pd
 import plotly.express as px
-import os
-
-# Download necessary NLTK data to a persistent location
-nltk_data_path = os.path.expanduser('~/.nltk_data')
-nltk.download('punkt', download_dir=nltk_data_path)
-nltk.data.path.append(nltk_data_path)
+import re
 
 # Initialize VADER sentiment analyzer
 vader_analyzer = SentimentIntensityAnalyzer()
@@ -30,13 +23,18 @@ analysis_method = st.selectbox(
 # Option to tokenize into sentences or analyze the whole text
 tokenize_option = st.checkbox("Separate by sentences")
 
+# Custom sentence tokenizer (fallback if punkt fails)
+def custom_sent_tokenize(text):
+    sentences = re.split(r'(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s', text)
+    return [s.strip() for s in sentences if s.strip()]
+
 if st.button("Analyze"):
     if user_text.strip() == "":
         st.warning("Please paste some text for analysis.")
     else:
         if tokenize_option:
-            # Tokenize into sentences
-            sentences = sent_tokenize(user_text)
+            # Tokenize into sentences using custom tokenizer
+            sentences = custom_sent_tokenize(user_text)
             sentiment_results = []
 
             for sentence in sentences:
@@ -87,7 +85,6 @@ if st.button("Analyze"):
                 st.write("Overall Sentiment Analysis (VADER):")
                 st.write(f"Polarity (compound score): {scores['compound']}")
                 st.write(f"Positive: {scores['pos']}, Negative: {scores['neg']}, Neutral: {scores['neu']}")
-
 
 # cd "/Users/arjunghumman/Downloads/VS Code Stuff/Python/sentiment App"
 # streamlit run sentiment.py
