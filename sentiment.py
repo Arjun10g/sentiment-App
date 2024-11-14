@@ -1,14 +1,13 @@
 import streamlit as st
 from textblob import TextBlob
 from nltk.tokenize import sent_tokenize
-from nltk import download
+import nltk  # Corrected import
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import pandas as pd
 import plotly.express as px
 
 # Download necessary NLTK data
 nltk.download('punkt')
-
 
 # Initialize VADER sentiment analyzer
 vader_analyzer = SentimentIntensityAnalyzer()
@@ -85,6 +84,7 @@ if st.button("Analyze"):
                 st.write("Overall Sentiment Analysis (VADER):")
                 st.write(f"Polarity (compound score): {scores['compound']}")
                 st.write(f"Positive: {scores['pos']}, Negative: {scores['neg']}, Neutral: {scores['neu']}")
+
 
 # cd "/Users/arjunghumman/Downloads/VS Code Stuff/Python/sentiment App"
 # streamlit run sentiment.py
